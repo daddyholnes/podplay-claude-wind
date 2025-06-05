@@ -19,11 +19,11 @@ import {
   PlusCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BackgroundGradientAnimation } from "../../../../shared-components/src/components/effects/BackgroundGradientAnimation";
-import { SplashCursor } from "../../../../shared-components/src/components/effects/SplashCursor";
+import { BackgroundGradientAnimation } from "@shared/effects/BackgroundGradientAnimation";
+import { SplashCursor } from "@shared/effects/SplashCursor";
 
 // Dynamically import AuroraBackground to avoid SSR issues
-const AuroraBackground = React.lazy(() => import("../../../../shared-components/src/components/effects/AuroraBackground"));
+const AuroraBackground = React.lazy(() => import("@shared/effects/AuroraBackground"));
 
 // Types
 type Task = {
@@ -373,42 +373,45 @@ const MagicMCPDashboard: React.FC = () => {
       />
       {/* Main dashboard UI */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="mb-6 flex flex-wrap gap-2">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="logs">Logs</TabsTrigger>
-          <TabsTrigger value="tasks">Tasks</TabsTrigger>
-          <TabsTrigger value="plans">Plans</TabsTrigger>
-          <TabsTrigger value="snapshots">Context Snapshots</TabsTrigger>
-          <TabsTrigger value="agents">Agents</TabsTrigger>
-          <TabsTrigger value="activity">Activity Feed</TabsTrigger>
+        {/* Modern Sanctuary Tabs Bar */}
+        <TabsList className="mb-10 flex flex-wrap gap-3 justify-center bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-2 border border-white/20">
+          <TabsTrigger value="overview" className="rounded-xl px-4 py-2 font-semibold text-white data-[state=active]:bg-purple-700/80 data-[state=active]:text-white">Overview</TabsTrigger>
+          <TabsTrigger value="logs" className="rounded-xl px-4 py-2 font-semibold text-white data-[state=active]:bg-purple-700/80 data-[state=active]:text-white">Logs</TabsTrigger>
+          <TabsTrigger value="tasks" className="rounded-xl px-4 py-2 font-semibold text-white data-[state=active]:bg-purple-700/80 data-[state=active]:text-white">Tasks</TabsTrigger>
+          <TabsTrigger value="plans" className="rounded-xl px-4 py-2 font-semibold text-white data-[state=active]:bg-purple-700/80 data-[state=active]:text-white">Plans</TabsTrigger>
+          <TabsTrigger value="snapshots" className="rounded-xl px-4 py-2 font-semibold text-white data-[state=active]:bg-purple-700/80 data-[state=active]:text-white">Context Snapshots</TabsTrigger>
+          <TabsTrigger value="agents" className="rounded-xl px-4 py-2 font-semibold text-white data-[state=active]:bg-purple-700/80 data-[state=active]:text-white">Agents</TabsTrigger>
+          <TabsTrigger value="activity" className="rounded-xl px-4 py-2 font-semibold text-white data-[state=active]:bg-purple-700/80 data-[state=active]:text-white">Activity Feed</TabsTrigger>
         </TabsList>
-
-        {/* Overview */}
         <TabsContent value="overview">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {metrics.map((metric, i) => (
-              <motion.div
-                key={metric.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.07 }}
-              >
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
-                    {metric.trend === 'up' ? (
-                      <ArrowUpRight className="text-green-500 w-5 h-5" />
-                    ) : (
-                      <ArrowDownRight className="text-red-500 w-5 h-5" />
-                    )}
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{metric.value}</div>
-                    <p className={cn("text-xs", metric.trend === 'up' ? 'text-green-500' : 'text-red-500')}>{metric.change > 0 ? '+' : ''}{metric.change}% from last month</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+          {/* Sanctuary Metrics Grid - Modern Glassmorphic Style */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-3xl px-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {metrics.map((metric, idx) => (
+                  <div
+                    key={metric.title}
+                    className="rounded-3xl bg-white/20 backdrop-blur-xl shadow-2xl p-8 flex flex-col items-center justify-center border border-white/30 transition-transform hover:scale-105 hover:shadow-3xl"
+                  >
+                    <div className="text-4xl font-extrabold text-white mb-2 drop-shadow-lg">{metric.value}</div>
+                    <div className="text-lg font-semibold text-white mb-3 text-center tracking-wide">{metric.title}</div>
+                    <div className={
+                      cn(
+                        "flex items-center gap-1 text-base font-bold",
+                        metric.trend === 'up' ? "text-green-200" : "text-red-200"
+                      )
+                    }>
+                      {metric.trend === 'up' ? (
+                        <ArrowUpRight className="w-5 h-5" />
+                      ) : (
+                        <ArrowDownRight className="w-5 h-5" />
+                      )}
+                      {metric.change > 0 ? `+${metric.change}%` : `${metric.change}%`} from last period
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </TabsContent>
 
@@ -560,7 +563,7 @@ const MagicMCPDashboard: React.FC = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              ))}
+              ))
             ) : (
               <div className="text-center text-muted-foreground py-8">No plans found.</div>
             )}
@@ -594,7 +597,7 @@ const MagicMCPDashboard: React.FC = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              ))}
+              ))
             ) : (
               <div className="text-center text-muted-foreground py-8">No context snapshots found.</div>
             )}

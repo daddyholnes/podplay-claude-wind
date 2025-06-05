@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SettingsMenu } from "@/components/ui/SettingsMenu";
-import { BackgroundGradientAnimation } from "../../../../shared-components/src/components/effects/BackgroundGradientAnimation";
-import { SplashCursor } from "../../../../shared-components/src/components/effects/SplashCursor";
-const AuroraBackground = React.lazy(() => import("../../../../shared-components/src/components/effects/AuroraBackground"));
+import { BackgroundGradientAnimation } from "@shared/effects/BackgroundGradientAnimation";
+import { SplashCursor } from "@shared/effects/SplashCursor";
+const AuroraBackground = React.lazy(() => import("@shared/effects/AuroraBackground"));
 import AgentPlan from "../../../../shared-components/src/components/ui/AgentPlan";
 
 // Types
@@ -41,6 +41,8 @@ const themePresets: Record<string, EffectSettings> = {
   "Liquid Energy": { backgroundGradient: true, splashCursor: true, aurora: false },
 };
 
+import { useLivePlans, AgentPlan as LiveAgentPlan } from "@/hooks/useLivePlans";
+
 export const MamaBearChatPage: React.FC = () => {
   // Theme/effects
   const [theme, setTheme] = useState<string>('Purple Delight');
@@ -50,9 +52,8 @@ export const MamaBearChatPage: React.FC = () => {
   }, [theme]);
 
   // Plans (live via WebSocket)
-import { useLivePlans, AgentPlan as LiveAgentPlan } from "@/hooks/useLivePlans";
-const userId = "dev_user"; // Replace with real user/session logic
-const { plans: livePlans, loading: plansLoading, error: plansError } = useLivePlans(userId);
+  const userId = "dev_user"; // Replace with real user/session logic
+  const { plans: livePlans, loading: plansLoading, error: plansError } = useLivePlans(userId);
 
   // Chat
   const [messages, setMessages] = useState<ChatMessage[]>([]);

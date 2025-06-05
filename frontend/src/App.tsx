@@ -31,7 +31,7 @@ const App: React.FC = () => {
             </Suspense>
           } />
           <Route path="/orchestration" element={
-            <Suspense fallback={<div className=\"text-center text-white pt-32\">Loading Orchestration...</div>}>
+            <Suspense fallback={<div className="text-center text-white pt-32">Loading Orchestration...</div>}>
               <OrchestrationDashboard />
             </Suspense>
           } />
